@@ -5,7 +5,6 @@ using UnityEngine;
 public class TerrainCollider : MonoBehaviour {
 
     public float deathSpeed;
-    public MonoBehaviour otherObject;
 
     private float velocity;
     
