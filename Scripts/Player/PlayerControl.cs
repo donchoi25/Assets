@@ -26,16 +26,19 @@ public class PlayerControl : MonoBehaviour {
     private Vector3 p;
     private bool charging;
     private bool engineOn;
+    private Fuel currentFuel;
 
 
     // Use this for initialization
     void Start() {
         myRigidBody = GetComponent<Rigidbody2D>();
         engineOn = true;
+        currentFuel = new Fuel(100);
     }
 
     void FixedUpdate() {
-        
+
+        //Debug.Log(currentFuel.getFuel());
         if (engineOn)
         {
             chargeInput();
@@ -76,6 +79,7 @@ public class PlayerControl : MonoBehaviour {
     {
         if (Input.GetButtonDown(chargeButton))
         {
+            Debug.Log("button down");
             //start timer
             timer = Time.time;
 
@@ -86,7 +90,8 @@ public class PlayerControl : MonoBehaviour {
 
         if (Input.GetButton(chargeButton))
         {
-            if ((Time.time - timer) / 0.4f > chargeMax && charging)
+            Debug.Log("button held");
+            if ((Time.time - timer) / 0.4f > chargeMax)
             {
                 chargeDash();
                 charging = false;
@@ -95,7 +100,9 @@ public class PlayerControl : MonoBehaviour {
 
         if (Input.GetButtonUp(chargeButton))
         {
+            Debug.Log("button up");
             chargeDash();
+            charging = false;
         }
 
     }
@@ -127,6 +134,8 @@ public class PlayerControl : MonoBehaviour {
         myRigidBody.velocity = mouseDirection * chargeDuration * chargeFactor;
 
         Time.timeScale = 1f;
+
+        currentFuel.decreaseFuel(25);
     }
 
     //engine button that toggles on and off engine, increases gravity when engine is off
