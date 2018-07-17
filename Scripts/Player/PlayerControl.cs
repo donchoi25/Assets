@@ -36,7 +36,7 @@ public class PlayerControl : MonoBehaviour {
         currentFuel = new Fuel(100);
     }
 
-    void FixedUpdate() {
+    void Update() {
 
         //Debug.Log(currentFuel.getFuel());
         if (engineOn)
@@ -79,7 +79,6 @@ public class PlayerControl : MonoBehaviour {
     {
         if (Input.GetButtonDown(chargeButton))
         {
-            Debug.Log("button down");
             //start timer
             timer = Time.time;
 
@@ -88,9 +87,8 @@ public class PlayerControl : MonoBehaviour {
             Time.timeScale = .4f;
         }
 
-        if (Input.GetButton(chargeButton))
+        if (Input.GetButton(chargeButton) && charging)
         {
-            Debug.Log("button held");
             if ((Time.time - timer) / 0.4f > chargeMax)
             {
                 chargeDash();
@@ -98,9 +96,8 @@ public class PlayerControl : MonoBehaviour {
             }
         }
 
-        if (Input.GetButtonUp(chargeButton))
+        if (Input.GetButtonUp(chargeButton) && charging)
         {
-            Debug.Log("button up");
             chargeDash();
             charging = false;
         }
@@ -122,7 +119,6 @@ public class PlayerControl : MonoBehaviour {
 
         //direction from object to mouse cursor
         mouseDirection = new Vector2(p.x - transform.position.x, p.y - transform.position.y).normalized;
-
 
         //if charge duration exceeds chargeMax, charge duration equals charge Max
         if (chargeDuration > chargeMax)
