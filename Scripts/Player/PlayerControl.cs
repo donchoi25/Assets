@@ -9,7 +9,7 @@ using UnityEngine;
  * RESTRUCTURE CODE WITH SCRIPTS WITH ONE SPECIFIC FUNCTION
  * */
 
-public class PlayerControl : MonoBehaviour {
+public class PlayerControl : MonoBehaviour, IKillable {
     
     //this is a test for sure
     public Camera c;
@@ -18,12 +18,12 @@ public class PlayerControl : MonoBehaviour {
     public float chargeFactor;
     public float moveSpeed;
     public float maxSpeed;
-    public float currentSpeed;
+    public float deathSpeed;
 
+    private float currentSpeed;
     private Rigidbody2D myRigidBody;
     private float timer;
     private Vector2 mousePosition;
-    private Vector3 p;
     private bool charging;
     private bool engineOn;
     private Fuel currentFuel;
@@ -50,6 +50,11 @@ public class PlayerControl : MonoBehaviour {
         }
 
         currentSpeed = myRigidBody.velocity.magnitude;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collider)
+    {
+        Kill(currentSpeed);
     }
 
     //adds force depending on arrow inputs, also caps movespeed during arrow movements
@@ -146,6 +151,14 @@ public class PlayerControl : MonoBehaviour {
         {
             myRigidBody.gravityScale = .8f;
             engineOn = false;
+        }
+    }
+
+    public void Kill(float velocity)
+    {
+        if (velocity > deathSpeed)
+        {
+            Debug.Log("You have died");
         }
     }
 }
