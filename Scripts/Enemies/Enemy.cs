@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy: IKillable
+public class Enemy
 {
     public static int enemyCount = 0;
     public static List<Enemy> enemyMasterList = new List<Enemy>();
 
     public Enemy()
     {
+        Debug.Log("Made");
         ++enemyCount;
         enemyMasterList.Add(this);
     }
@@ -17,11 +18,6 @@ public class Enemy: IKillable
     {
         --enemyCount;
         enemyMasterList.Remove(this);
-    }
-
-   public void Kill(float velocity)
-    {
-
     }
 
     public GameObject findPlayer()
