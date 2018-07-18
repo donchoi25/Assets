@@ -2,22 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChargeDash {
+public class ChargeDash : BPlayer{
 
     private Camera c;
     private Rigidbody2D myRigidBody;
     private float chargeMax;
     private float chargeFactor;
+    private float timer;
+    private bool charging;
+    private Transform transform;
+    private Fuel currentFuel;
+    private string chargeButton;
 
-    public ChargeDash(Camera c, Rigidbody2D myRigidBody, float chargeMax, float chargeFactor)
+    public ChargeDash(Camera c, Rigidbody2D myRigidBody, float chargeMax, float chargeFactor, bool charging, Transform transform, Fuel currentFuel, string chargeButton)
     {
         this.c = c;
         this.myRigidBody = myRigidBody;
         this.chargeMax = chargeMax;
         this.chargeFactor = chargeFactor;
+        this.charging = charging;
+        this.transform = transform;
+        this.currentFuel = currentFuel;
+        this.chargeButton = chargeButton;
     }
 
-    public void chargeDash(float timer, Transform transform, Fuel currentFuel)
+    public void chargeDash()
     {
         Vector2 mouseDirection;
         float chargeDuration;
@@ -45,10 +54,8 @@ public class ChargeDash {
         currentFuel.decreaseFuel(25);
     }
 
-    public void chargeInput(Transform transform, Fuel currentFuel, string chargeButton)
+    public void chargeInput()
     {
-        float timer = 0;
-        bool charging = false;
 
         if (Input.GetButtonDown(chargeButton))
         {
@@ -64,14 +71,14 @@ public class ChargeDash {
         {
             if ((Time.time - timer) / 0.4f > chargeMax)
             {
-                chargeDash(timer, transform, currentFuel);
+                chargeDash();
                 charging = false;
             }
         }
 
         if (Input.GetButtonUp(chargeButton) && charging)
         {
-            chargeDash(timer, transform, currentFuel);
+            chargeDash();
             charging = false;
         }
     }
